@@ -322,10 +322,6 @@ public class GuahaoService {
         }
 
         Properties mailProps = new Properties();
-        /*mailProps.put("mail.smtp.host", "applesmtp.126.com");
-        mailProps.put("mail.smtp.auth", "true");
-        mailProps.put("mail.username", "boazy@126.com");
-        mailProps.put("mail.password", "Dwb70822Gry70208");*/
         mailProps.put("mail.smtp.host", emailParam.getMailSmtpHost());
         mailProps.put("mail.smtp.auth", emailParam.getMailAmtpAuth());
         mailProps.put("mail.username", emailParam.getMailUsername());

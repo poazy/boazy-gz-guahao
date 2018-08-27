@@ -3,20 +3,20 @@ package boazy.gz.guahao.pojo.h100202.d2102602FEZX239897;
 import boazy.gz.guahao.pojo.RegParam;
 
 /**
- * 2102602FEZX239897|040
- * 儿童骨科特诊(珠)|徐宏文
+ * 2006302FEZX239897|021
+ * 儿童康复特需门诊|徐开寿
  * <p>
- * 主任医师，周三下午号
+ * 主任医师，周二下午号
  * <p>
- * http://www.guahao.gov.cn/ajx_regtime.xhtml?HIS_CD=100202&DEP_ID=2102602FEZX239897&DOC_ID=040&REG_DAT=2018-08-29&TM_FLG=2
+ * http://www.guahao.gov.cn/ajx_regtime.xhtml?HIS_CD=100202&DEP_ID=2006302FEZX239897&DOC_ID=021&REG_DAT=2018-08-28&TM_FLG=2
  *
  * @author boazy
  * @company boazy
- * @date 2018/8/21
+ * @date 2018/8/27
  */
-public class RegDoc040Param extends RegParam {
+public class RegDoc021Param extends RegParam {
 
-    public RegDoc040Param() {
+    public RegDoc021Param() {
         super();
 
         this.setYbChkFlg("1");
@@ -24,12 +24,12 @@ public class RegDoc040Param extends RegParam {
         this.setRegPayTyp("");
         this.setMedCode("");
         this.setHisCd("100202");
-        this.setDepId("2102602FEZX239897");
-        this.setDepNm("儿童骨科特诊(珠)");
-        this.setDocId("040");
-        this.setDocNm("徐宏文");
+        this.setDepId("2006302FEZX239897");
+        this.setDepNm("儿童康复特需门诊");
+        this.setDocId("021");
+        this.setDocNm("徐开寿");
 
-        /*this.setRegDat("2018-08-22");
+        /*this.setRegDat("2018-08-28");
         this.setTimFlg("2");
         this.setStaTim("14:00");
         this.setEndTim("14:30");*/

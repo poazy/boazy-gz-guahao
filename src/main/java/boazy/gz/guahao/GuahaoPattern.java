@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GuahaoPattern {
     private static final Logger LOGGER = LoggerFactory.getLogger(GuahaoPattern.class);
-    private static final int RETRY_TIMES = 3;
+    private static final int RETRY_TIMES = 5;
 
     /**
      * 挂号模式1
@@ -29,6 +29,11 @@ public class GuahaoPattern {
     public static void regPattern1(LoginParam loginParam, RegParam regParam, EMailParam emailParam, Long waitTime) {
         GuahaoService guahaoService = new GuahaoService();
         guahaoService.setEmailParam(emailParam);
+
+        String regSETimes = null;
+        if(null != regParam.getStaTim() && null != regParam.getEndTim()) {
+            regSETimes = regParam.getStaTim() + "-" + regParam.getEndTim();
+        }
 
         List<String> periods;
         while (true) {
@@ -49,7 +54,9 @@ public class GuahaoPattern {
                         throw new RuntimeException(e.getMessage(), e);
                     }
                 }
-            } else {
+            } else if(null == regSETimes) {
+                break;
+            } else if(null != regSETimes && periods.contains(regSETimes)) {
                 break;
             }
         }
@@ -58,10 +65,7 @@ public class GuahaoPattern {
         guahaoService.homepage();
         // 2、登陆
         int count = 1;
-        while (true) {
-            if (count > RETRY_TIMES) {
-                break;
-            }
+        while (count <= RETRY_TIMES) {
 
             String loginResp = guahaoService.login(loginParam);
             JSONObject jsonObject = JSONObject.parseObject(loginResp);
@@ -76,18 +80,23 @@ public class GuahaoPattern {
             count++;
         }
         // 3、挂号
-        while (true) {
-            LOGGER.info("有余号的时段：{}", periods);
-            LOGGER.info("提交挂号：{}|{}|{}|{}|{}|{}"
-                    , regParam.getHisCd(), regParam.getDepNm(), regParam.getDocNm()
-                    , regParam.getRegDat(), regParam.getTimFlg(), periods.get(0)
-            );
-            String[] seTims = periods.get(0).split("-");
-            regParam.setStaTim(seTims[0]);
-            regParam.setEndTim(seTims[1]);
+        LOGGER.info("有余号的时段：{}", periods);
+        LOGGER.info("提交挂号：{}|{}|{}|{}|{}|{}"
+                , regParam.getHisCd(), regParam.getDepNm(), regParam.getDocNm()
+                , regParam.getRegDat(), regParam.getTimFlg(), null != regSETimes ? regSETimes : periods.get(0)
+        );
+        String[] seTimes = periods.get(0).split("-");
+        if(null != regSETimes) {
+            seTimes = regSETimes.split("-");
+        }
+        regParam.setStaTim(seTimes[0]);
+        regParam.setEndTim(seTimes[1]);
+        count = 1;
+        while (count <= RETRY_TIMES) {
 
             String regResp = guahaoService.reg(regParam);
             JSONObject jsonObject = JSONObject.parseObject(regResp);
+            count++;
             if ("SUC" .equals(jsonObject.getString("RSP_MAP"))) {
                 LOGGER.info("挂号成功，请在30分钟内支付！");
 
@@ -98,7 +107,7 @@ public class GuahaoPattern {
 
                     // 邮件通知
                     try {
-                        guahaoService.sendEMail(regResp);
+                        guahaoService.sendEMail(orderDetailUrl + "<br />" + regResp);
                     } catch (Exception e) {
                         LOGGER.error("发送挂号成功邮件时发生异常！");
                     }
@@ -118,6 +127,8 @@ public class GuahaoPattern {
                 LOGGER.error("挂号失败：未知问题，检查代码程序！" );
             }
         }
+
+        regPattern1(loginParam, regParam, emailParam, waitTime);
     }
 
 }

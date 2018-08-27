@@ -23,7 +23,7 @@ public class GuahaoDemo {
         RegDoc040Param regParam = new RegDoc040Param();
         regParam.regTime("2018-08-29", "2", "14:00", "14:30");
         regParam.regPerson("李平安", "M", "身份证号码"
-                , "000007622833", "2014-09-15");
+                , "00000********", "201*-0*-1*");
         // 采用挂号模式1进行（刷）挂号
         GuahaoPattern.regPattern1(loginParam, regParam, emailParam, 1000L * 5);
     }

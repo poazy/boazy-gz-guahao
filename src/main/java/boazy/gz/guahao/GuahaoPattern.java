@@ -46,18 +46,25 @@ public class GuahaoPattern {
                         , regParam.getHisCd(), regParam.getDepNm(), regParam.getDocNm()
                         , regParam.getRegDat(), regParam.getTimFlg()
                 );
-
-                if(null != waitTime) {
-                    try {
-                        Thread.sleep(waitTime);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e.getMessage(), e);
-                    }
-                }
             } else if(null == regSETimes) {
                 break;
             } else if(null != regSETimes && periods.contains(regSETimes)) {
                 break;
+            }
+
+            if(null != regSETimes) {
+                LOGGER.warn("（{}|{}|{}|{}|{}|{}）没有爬取到有余号时段！继续努力爬取中..."
+                        , regParam.getHisCd(), regParam.getDepNm(), regParam.getDocNm()
+                        , regParam.getRegDat(), regParam.getTimFlg(), regSETimes
+                );
+            }
+
+            if(null != waitTime) {
+                try {
+                    Thread.sleep(waitTime);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
             }
         }
 
@@ -125,6 +132,7 @@ public class GuahaoPattern {
                 LOGGER.error("挂号失败：" + gwaObject.getString("MSG_INF"));
             } else {
                 LOGGER.error("挂号失败：未知问题，检查代码程序！" );
+
             }
         }
 

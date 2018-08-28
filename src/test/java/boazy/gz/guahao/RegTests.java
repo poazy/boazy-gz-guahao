@@ -45,7 +45,7 @@ public class RegTests {
         regParam.setBbregFee("0");
         regParam.setVerId(null);
 
-        regParam.setOpeNm("段世骏");
+        regParam.setOpeNm("段**");
         regParam.setOpeSex("M");
         regParam.setOpeIdc("430481************");
         regParam.setConnNo("00000*******");

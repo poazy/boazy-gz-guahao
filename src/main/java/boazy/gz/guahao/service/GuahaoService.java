@@ -349,7 +349,7 @@ public class GuahaoService {
         // 设置收件人
         message.setRecipients(Message.RecipientType.TO, emailParam.getToAddresses());
         // 设置邮件标题
-        message.setSubject("自动(刷)挂号成功(广州市妇女儿童医疗中心)，请在30分钟内支付！");
+        message.setSubject("自动(刷)挂号成功，请在30分钟内支付！");
         // 设置邮件的内容体
         message.setContent(regResp, "text/html;charset=UTF-8");
         // 发送邮件

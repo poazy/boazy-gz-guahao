@@ -81,12 +81,13 @@ public class GuahaoPattern {
             count++;
         }
         // 3、挂号
+        String perTimes = null != periods ? periods.get(0) : null;
         LOGGER.info("有余号的时段：{}", periods);
         LOGGER.info("提交挂号：{}|{}|{}|{}|{}|{}"
                 , regParam.getHisCd(), regParam.getDepNm(), regParam.getDocNm()
-                , regParam.getRegDat(), regParam.getTimFlg(), null != regSETimes ? regSETimes : periods.get(0)
+                , regParam.getRegDat(), regParam.getTimFlg(), null != regSETimes ? regSETimes : perTimes
         );
-        String[] seTimes = periods.get(0).split("-");
+        String[] seTimes = null != perTimes ? perTimes.split("-") : new String[2];
         if(null != regSETimes) {
             seTimes = regSETimes.split("-");
         }
@@ -99,10 +100,11 @@ public class GuahaoPattern {
             JSONObject jsonObject = JSONObject.parseObject(regResp);
             count++;
             if ("SUC" .equals(jsonObject.getString("RSP_MAP"))) {
-                LOGGER.info("挂号成功，请在30分钟内支付！");
+                LOGGER.info("挂号提交响应交易成功！");
 
                 String ordNo = jsonObject.getString("ORD_NO");
                 if (null != ordNo && !ordNo.trim().isEmpty()) {
+                    LOGGER.info("挂号成功，请在30分钟内支付！");
                     String orderDetailUrl = guahaoService.getOrderDetailUrl(ordNo);
                     LOGGER.info("订单详细信息URL：{}", orderDetailUrl);
 

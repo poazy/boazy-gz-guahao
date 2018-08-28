@@ -286,6 +286,9 @@ public class GuahaoService {
             try {
                 response = HTTP_CLIENT.execute(captchaRequest);
                 resp = EntityUtils.toString(response.getEntity());
+                if(!resp.contains("已满")) {
+                    LOGGER.error("---没有爬取到号的时段信息，请检查挂号参数是否正确！---");
+                }
             } catch (Throwable throwable) {
                 if (count > RETRY_TIMES) {
                     throw new RuntimeException(throwable.getMessage(), throwable);

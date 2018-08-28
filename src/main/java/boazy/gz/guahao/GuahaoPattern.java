@@ -42,21 +42,15 @@ public class GuahaoPattern {
                     regParam.getHisCd(), regParam.getDepId()
                     , regParam.getDocId(), regParam.getRegDat(), regParam.getTimFlg());
             if (null == periods || periods.isEmpty()) {
-                LOGGER.warn("（{}|{}|{}|{}|{}）没有爬取到有余号时段！继续努力爬取中..."
+                LOGGER.warn("（{}|{}|{}|{}|{}{}）没有爬取到有余号时段！继续努力爬取中..."
                         , regParam.getHisCd(), regParam.getDepNm(), regParam.getDocNm()
                         , regParam.getRegDat(), regParam.getTimFlg()
+                        , null != regSETimes ? ("|" + regSETimes) : ""
                 );
             } else if(null == regSETimes) {
                 break;
             } else if(periods.contains(regSETimes)) {
                 break;
-            }
-
-            if(null != regSETimes) {
-                LOGGER.warn("（{}|{}|{}|{}|{}|{}）没有爬取到有余号时段！继续努力爬取中..."
-                        , regParam.getHisCd(), regParam.getDepNm(), regParam.getDocNm()
-                        , regParam.getRegDat(), regParam.getTimFlg(), regSETimes
-                );
             }
 
             if(null != waitTime) {

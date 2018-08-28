@@ -94,6 +94,7 @@ public class GuahaoPattern {
         regParam.setStaTim(seTimes[0]);
         regParam.setEndTim(seTimes[1]);
         count = 1;
+        boolean regOk = false;
         while (count <= RETRY_TIMES) {
 
             String regResp = guahaoService.reg(regParam);
@@ -115,6 +116,7 @@ public class GuahaoPattern {
                         LOGGER.error("发送挂号成功邮件时发生异常！");
                     }
 
+                    regOk = true;
                     break; // 挂号成功退出
                 } else {
                     LOGGER.error("ORD_NO is null.");
@@ -132,7 +134,9 @@ public class GuahaoPattern {
             }
         }
 
-        regPattern1(loginParam, regParam, emailParam, waitTime);
+        if(!regOk) {
+            regPattern1(loginParam, regParam, emailParam, waitTime);
+        }
     }
 
 }

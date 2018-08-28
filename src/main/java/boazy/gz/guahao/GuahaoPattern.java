@@ -48,7 +48,7 @@ public class GuahaoPattern {
                 );
             } else if(null == regSETimes) {
                 break;
-            } else if(null != regSETimes && periods.contains(regSETimes)) {
+            } else if(periods.contains(regSETimes)) {
                 break;
             }
 

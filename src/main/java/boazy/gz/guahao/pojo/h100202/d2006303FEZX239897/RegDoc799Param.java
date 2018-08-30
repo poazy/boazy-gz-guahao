@@ -8,7 +8,7 @@ import boazy.gz.guahao.pojo.RegParam;
  * <p>
  * 副主任医师，周三下午号
  * <p>
- * http://www.guahao.gov.cn/ajx_regtime.xhtml?HIS_CD=100202&DEP_ID=2006303FEZX239897&DOC_ID=799&REG_DAT=2018-08-29&TM_FLG=2
+ * http://www.guahao.gov.cn/ajx_regtime.xhtml?HIS_CD=100202&DEP_ID=2006303FEZX239897&DOC_ID=799&REG_DAT=2018-09-05&TM_FLG=2
  *
  * @author boazy
  * @company boazy

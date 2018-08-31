@@ -25,7 +25,7 @@ public class RegDoc040Param extends RegParam {
         this.setMedCode("");
         this.setHisCd("100201");
         this.setDepId("110402FEZX239893");
-        this.setDepNm("儿童骨科（儿）");
+        this.setDepNm("儿童骨科主任");
         this.setDocId("040");
         this.setDocNm("徐宏文");
 
@@ -36,7 +36,7 @@ public class RegDoc040Param extends RegParam {
 
         this.setRegFee("0");
         this.setTreFee("3000");
-        this.setBbtreFee("3000");
+        this.setBbtreFee("3900");
         this.setBbregFee("0");
         this.setVerId(null);
 

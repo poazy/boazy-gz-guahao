@@ -8,7 +8,7 @@ import boazy.gz.guahao.pojo.RegParam;
  * <p>
  * 副主任医师，周一下午号/周三上午号
  * <p>
- * http://www.guahao.gov.cn/ajx_regtime.xhtml?HIS_CD=100201&DEP_ID=1004400FEZX239892&DOC_ID=2237&REG_DAT=2018-09-05&TM_FLG=1
+ * http://www.guahao.gov.cn/ajx_regtime.xhtml?HIS_CD=100201&DEP_ID=1004400FEZX239892&DOC_ID=2237&REG_DAT=2018-09-10&TM_FLG=2
  *
  * @author boazy
  * @company boazy
@@ -29,10 +29,10 @@ public class RegDoc2237Param extends RegParam {
         this.setDocId("2237");
         this.setDocNm("李金玲");
 
-        /*this.setRegDat("2018-09-05");
-        this.setTimFlg("1");
-        this.setStaTim("08:00");
-        this.setEndTim("08:30");*/
+        /*this.setRegDat("2018-09-10");
+        this.setTimFlg("2");
+        this.setStaTim("14:00");
+        this.setEndTim("14:30");*/
 
         this.setRegFee("0");
         this.setTreFee("2000");

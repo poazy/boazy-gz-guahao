@@ -11,8 +11,8 @@ public class LoginParam {
     private String cardNo;
     private String verCd;
     private String cardTyp = "1";
-    private String pwd;
-    private String loginScon ="1";
+    private String usrKey;
+    private String loginScon = "1";
     private String ip;
 
     public LoginParam() {
@@ -20,13 +20,13 @@ public class LoginParam {
 
     public LoginParam(String cardNo, String pwd) {
         this.cardNo = cardNo;
-        this.pwd = pwd;
+        this.usrKey = pwd;
     }
 
     public LoginParam(String cardNo, String verCd, String pwd) {
         this.cardNo = cardNo;
         this.verCd = verCd;
-        this.pwd = pwd;
+        this.usrKey = pwd;
     }
 
     public String getCardNo() {
@@ -53,12 +53,12 @@ public class LoginParam {
         this.cardTyp = cardTyp;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getUsrKey() {
+        return usrKey;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setUsrKey(String usrKey) {
+        this.usrKey = usrKey;
     }
 
     public String getLoginScon() {

@@ -35,6 +35,9 @@ public class GuahaoService {
     private static final CloseableHttpClient HTTP_CLIENT = HttpClients.custom()
             .setDefaultCookieStore(new BasicCookieStore())
             .setRedirectStrategy(new LaxRedirectStrategy())
+            /*.setDefaultRequestConfig(RequestConfig.custom()
+                    .setProxy(HttpHost.create("127.0.0.1:8888"))
+                    .build())*/
             .build();
     private static final int RETRY_TIMES = 3;
 
@@ -80,11 +83,11 @@ public class GuahaoService {
 
         HttpUriRequest loginRequest = RequestBuilder
                 .post()
-                .setUri(homePageUrl + "/logined.xhtml?" + Math.random())
+                .setUri(homePageUrl + "/logined.xhtml?r=" + Math.random())
                 .addParameter("CARD_NO", loginParam.getCardNo())
                 .addParameter("VER_CD", loginCaptcha)
                 .addParameter("CARD_TYP", loginParam.getCardTyp())
-                .addParameter("PWD", loginParam.getPwd())
+                .addParameter("USR_KEY", loginParam.getUsrKey())
                 .addParameter("LOGIN_SCON", loginParam.getLoginScon())
                 .addParameter("IP", loginParam.getIp())
                 .build();

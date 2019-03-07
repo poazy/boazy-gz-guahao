@@ -22,16 +22,16 @@ public class GuahaoPattern {
      * 挂号（挂最早号有号的时段号）
      *
      * @param loginParam 登陆参数
-     * @param regParam 挂号参数
+     * @param regParam   挂号参数
      * @param emailParam 发送邮件参数
-     * @param waitTime 刷号频率
+     * @param waitTime   刷号频率
      */
     public static void regPattern1(LoginParam loginParam, RegParam regParam, EMailParam emailParam, Long waitTime) {
         GuahaoService guahaoService = new GuahaoService();
         guahaoService.setEmailParam(emailParam);
 
         String regSETimes = null;
-        if(null != regParam.getStaTim() && null != regParam.getEndTim()) {
+        if (null != regParam.getStaTim() && null != regParam.getEndTim()) {
             regSETimes = regParam.getStaTim() + "-" + regParam.getEndTim();
         }
 
@@ -47,19 +47,25 @@ public class GuahaoPattern {
                         , regParam.getRegDat(), regParam.getTimFlg()
                         , null != regSETimes ? ("|" + regSETimes) : ""
                 );
-            } else if(null == regSETimes) {
+            } else if (null == regSETimes) {
                 break;
-            } else if(periods.contains(regSETimes)) {
+            } else if (periods.contains(regSETimes)) {
                 break;
             }
 
-            if(null != waitTime) {
+            if (null != waitTime) {
                 try {
                     Thread.sleep(waitTime);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }
             }
+        }
+
+        try {
+            guahaoService.sendEMailByHaveNumber(JSONObject.toJSONString(periods));
+        } catch (Throwable t) {
+            LOGGER.error("刷到余号了，发送邮件通知失败！", t);
         }
 
         // 1、访问首页页面
@@ -70,7 +76,7 @@ public class GuahaoPattern {
 
             String loginResp = guahaoService.login(loginParam);
             JSONObject jsonObject = JSONObject.parseObject(loginResp);
-            if ("SUC" .equals(jsonObject.getString("RSP_MAP"))) {
+            if ("SUC".equals(jsonObject.getString("RSP_MAP"))) {
                 LOGGER.info("登陆成功");
                 break;
             }
@@ -88,7 +94,7 @@ public class GuahaoPattern {
                 , regParam.getRegDat(), regParam.getTimFlg(), null != regSETimes ? regSETimes : perTimes
         );
         String[] seTimes = null != perTimes ? perTimes.split("-") : new String[2];
-        if(null != regSETimes) {
+        if (null != regSETimes) {
             seTimes = regSETimes.split("-");
         }
         regParam.setStaTim(seTimes[0]);
@@ -100,7 +106,7 @@ public class GuahaoPattern {
             String regResp = guahaoService.reg(regParam);
             JSONObject jsonObject = JSONObject.parseObject(regResp);
             count++;
-            if ("SUC" .equals(jsonObject.getString("RSP_MAP"))) {
+            if ("SUC".equals(jsonObject.getString("RSP_MAP"))) {
                 LOGGER.info("挂号提交响应交易成功！");
 
                 String ordNo = jsonObject.getString("ORD_NO");
@@ -111,7 +117,7 @@ public class GuahaoPattern {
 
                     // 邮件通知
                     try {
-                        guahaoService.sendEMail(orderDetailUrl + "<br />" + regResp);
+                        guahaoService.sendEMailByRegOk(orderDetailUrl + "<br />" + regResp);
                     } catch (Exception e) {
                         LOGGER.error("发送挂号成功邮件时发生异常！");
                     }
@@ -126,15 +132,15 @@ public class GuahaoPattern {
             }
 
             JSONObject gwaObject = jsonObject.getJSONObject("GWA");
-            if(null != gwaObject) {
+            if (null != gwaObject) {
                 LOGGER.error("挂号失败：" + gwaObject.getString("MSG_INF"));
             } else {
-                LOGGER.error("挂号失败：未知问题，检查代码程序！" );
+                LOGGER.error("挂号失败：未知问题，检查代码程序！");
 
             }
         }
 
-        if(!regOk) {
+        if (!regOk) {
             regPattern1(loginParam, regParam, emailParam, waitTime);
         }
     }

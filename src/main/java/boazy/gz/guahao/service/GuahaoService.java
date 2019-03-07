@@ -179,7 +179,7 @@ public class GuahaoService {
             try {
                 regResponse = HTTP_CLIENT.execute(regRequest);
                 regResp = EntityUtils.toString(regResponse.getEntity());
-                if(regResp.indexOf("{") > 0) {
+                if (regResp.indexOf("{") > 0) {
                     regResp = regResp.substring(regResp.indexOf("{")); // 去掉响应前面的空白符
                 }
             } catch (Throwable throwable) {
@@ -218,7 +218,7 @@ public class GuahaoService {
                 ITesseract instance = new Tesseract();
                 BufferedImage image = ImageIO.read(inputStream);
                 String captcha = instance.doOCR(image);
-                if(captcha.length() > 4) {
+                if (captcha.length() > 4) {
                     captcha = captcha.substring(0, 4);
                 }
                 String newCaptcha = captcha.replaceAll("S|s|\\$", "5");
@@ -230,7 +230,7 @@ public class GuahaoService {
                 newCaptcha = newCaptcha.replaceAll("q|g", "9");
                 newCaptcha = newCaptcha.replaceAll("a|A", "4");
                 newCaptcha = newCaptcha.replaceAll("T", "7");
-                if(!newCaptcha.equals(captcha)) {
+                if (!newCaptcha.equals(captcha)) {
                     LOGGER.warn("captcha：{}", captcha);
                     captcha = newCaptcha;
                 }
@@ -289,7 +289,7 @@ public class GuahaoService {
             try {
                 response = HTTP_CLIENT.execute(captchaRequest);
                 resp = EntityUtils.toString(response.getEntity());
-                if(!resp.contains("已满")) {
+                if (!resp.contains("已满")) {
                     LOGGER.error("---没有爬取到号的时段信息，请检查挂号参数是否正确！---");
                 }
             } catch (Throwable throwable) {
@@ -313,7 +313,7 @@ public class GuahaoService {
         List<String> remainderPeriods = new ArrayList<>();
         Pattern pattern = Pattern.compile("(?<=submitRegTime\\()('[0-9]{2}:[0-9]{2}','[0-9]{2}:[0-9]{2}')(?=\\))");
         Matcher matcher = pattern.matcher(resp);
-        while(matcher.find()) {
+        while (matcher.find()) {
             remainderPeriods.add(matcher.group()
                     .replace("','", "-")
                     .replaceAll("'", ""));
@@ -322,8 +322,16 @@ public class GuahaoService {
         return remainderPeriods;
     }
 
-    public void sendEMail(String regResp) throws MessagingException {
-        if(null == emailParam) {
+    public void sendEMailByHaveNumber(String content) throws MessagingException {
+        sendEMail("有余号了，请准备挂号！为避免自动挂号失败。", content);
+    }
+
+    public void sendEMailByRegOk(String content) throws MessagingException {
+        sendEMail("自动(刷)挂号成功，请在30分钟内支付！", content);
+    }
+
+    public void sendEMail(String subject, String content) throws MessagingException {
+        if (null == emailParam) {
             LOGGER.error("自动（刷）挂号未能发送邮件通知，邮相关参数为空！");
         }
 
@@ -352,9 +360,9 @@ public class GuahaoService {
         // 设置收件人
         message.setRecipients(Message.RecipientType.TO, emailParam.getToAddresses());
         // 设置邮件标题
-        message.setSubject("自动(刷)挂号成功，请在30分钟内支付！");
+        message.setSubject(subject);
         // 设置邮件的内容体
-        message.setContent(regResp, "text/html;charset=UTF-8");
+        message.setContent(content, "text/html;charset=UTF-8");
         // 发送邮件
         Transport.send(message);
     }
